@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CategoryController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $query = Category::query();
@@ -17,7 +20,7 @@ class CategoryController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
         
-        $categories = $query->get();
+        $categories = $query->withCount('tasks')->get();
         return view('categories.index', compact('categories'));
     }
 

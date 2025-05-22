@@ -64,6 +64,9 @@ class TaskController extends BaseController
             }
         }
 
+        // Debug: Log the query being executed
+        \Log::info('Tasks query:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
+
         $tasks = $query->orderBy('order')->orderBy('created_at', 'desc')->paginate(10);
         $categories = $request->user()->categories;
 

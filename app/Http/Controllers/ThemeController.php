@@ -13,6 +13,11 @@ class ThemeController extends Controller
         
         session(['theme' => $newTheme]);
         
-        return back();
+        // Return JSON response for AJAX requests
+        if ($request->ajax()) {
+            return response()->json(['theme' => $newTheme]);
+        }
+        
+        return redirect()->back();
     }
 } 

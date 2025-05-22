@@ -22,6 +22,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tasks/create-test', [TaskController::class, 'createTestTask'])->name('tasks.create-test');
     
     Route::resource('categories', CategoryController::class);
+
+    // Temporary debug route to display all tasks and their due dates
+    Route::get('/debug/tasks', function () {
+        $tasks = App\Models\Task::all(['id', 'title', 'due_date']);
+        return response()->json($tasks);
+    });
 });
 
 Route::middleware('auth')->group(function () {

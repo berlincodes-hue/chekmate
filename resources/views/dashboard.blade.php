@@ -107,20 +107,17 @@
     @push('scripts')
     <script>
         function toggleTaskComplete(taskId) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/tasks/' + taskId + '/toggle-complete';
-            
-            // Add CSRF token
-            const csrfToken = document.createElement('input');
-            csrfToken.type = 'hidden';
-            csrfToken.name = '_token';
-            csrfToken.value = '{{ csrf_token() }}';
-            form.appendChild(csrfToken);
-            
-            // Submit the form
-            document.body.appendChild(form);
-            form.submit();
+            fetch('/tasks/' + taskId + '/toggle-complete', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+            });
         }
     </script>
     @endpush
